@@ -10,5 +10,20 @@ module.exports = {
     react: {
       version: 'detect',
     },
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+      },
+    },
+  },
+  rules: {
+    'react/jsx-filename-extension': [
+      1,
+      {
+        extensions: ['.tsx', '.jsx'],
+      },
+    ],
+    'import/extensions': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
 };

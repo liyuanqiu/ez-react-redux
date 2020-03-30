@@ -1,10 +1,39 @@
 import React from 'react';
-import { Thing, Props } from '../src';
+import logger from 'redux-logger';
+import { applyMiddleware } from 'redux';
+import { createStore, useSelector } from '../src';
 
 export default {
-  title: 'Welcome',
+  title: 'ez-react-redux',
 };
 
-// By passing optional props to this story, you can control the props of the component when
-// you consume the story in a test.
-export const Default = (props?: Partial<Props>) => <Thing {...props} />;
+type State = {
+  count: number;
+};
+const initialState: State = {
+  count: 0,
+};
+const store = createStore<State>(initialState, applyMiddleware(logger));
+
+export const Default = () => {
+  const count = useSelector(store, state => state.count);
+  function add() {
+    store.dispatch({
+      type: 'add',
+      updater(state) {
+        return {
+          ...state,
+          count: state.count + 1,
+        };
+      },
+    });
+  }
+  return (
+    <div>
+      <h1>{count}</h1>
+      <button type="button" onClick={add}>
+        +
+      </button>
+    </div>
+  );
+};
