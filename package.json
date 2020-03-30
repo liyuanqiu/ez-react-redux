@@ -36,6 +36,16 @@
   },
   "name": "ez-react-redux",
   "author": "yuanqiulee@gmail.com",
+  "homepage": "https://github.com/liyuanqiu/ez-react-redux",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liyuanqiu/ez-react-redux"
+  },
+  "keywords": [
+    "redux",
+    "react-redux",
+    "react"
+  ],
   "module": "dist/ez-react-redux.esm.js",
   "devDependencies": {
     "@babel/core": "^7.9.0",
