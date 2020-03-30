@@ -10,8 +10,13 @@ But it's a life saver in small projects.
 - Immediately update your state any time any where without the hindrance of reducers
 - `useSelector` supported
 - No react context
-- Multiple store instances
-- Support `redux` ecosystem
+
+And it also has the following features:
+
+- Support multiple store instances
+- Support `redux` ecosystem(like `redux-logger`)
+- Support `Typescript`
+- Very small size [![Bundle Size](https://badgen.net/bundlephobia/minzip/ez-react-redux)]()
 
 ## EZ at a Glance
 
