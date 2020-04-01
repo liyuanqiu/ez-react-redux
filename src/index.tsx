@@ -6,12 +6,13 @@ import {
   Store,
 } from 'redux';
 import { useState, useEffect } from 'react';
+import produce from 'immer';
 
 /**
  * Updater is a function that describes how to update state.
  * @template S The type of the whole state
  */
-export type Updater<S = any> = (state: S) => S;
+export type Updater<S = any> = (state: S) => void;
 
 /**
  * EZAction is the only action type for `ez-react-redux`
@@ -32,8 +33,7 @@ export function createStore<S = any>(
   // create redux reducer
   const reducer: Reducer<S> = (state = initialState, action: EZAction<S>) => {
     if (action.updater !== undefined) {
-      const next = action.updater(state);
-      return next;
+      return produce(state, action.updater);
     }
     return state;
   };

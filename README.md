@@ -8,8 +8,9 @@ But it's a life saver in small projects.
 
 - No reducers(out of the box)
 - Immediately update your state any time any where without the hindrance of reducers
+- Get rid of **immutable**, `immer` is internally embeded
 - `useSelector` supported
-- No react context
+- No React Context
 
 And it also has the following features:
 
@@ -28,10 +29,7 @@ const count = useSelector(store, state => state.count);
 store.dispatch({
   type: 'add',
   updater(state) {
-    return {
-      ...state,
-      count: state.count + 1,
-    };
+    state.count += 1;
   },
 });
 ```
@@ -58,10 +56,7 @@ function MyComponent() {
     store.dispatch({
       type: 'add',
       updater(state) {
-        return {
-          ...state,
-          count: state.count + 1,
-        };
+        state.count += 1;
       },
     });
   }
@@ -85,7 +80,7 @@ import { Action, StoreEnhancer, Store } from 'redux';
  * Updater is a function that describes how to update state.
  * @template S The type of the whole state
  */
-export declare type Updater<S = any> = (state: S) => S;
+export declare type Updater<S = any> = (state: S) => void;
 /**
  * EZAction is the only action type for `ez-react-redux`
  * @template S The type of the whole state

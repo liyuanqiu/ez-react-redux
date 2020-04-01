@@ -21,10 +21,8 @@ export const Default = () => {
     store.dispatch({
       type: 'add',
       updater(state) {
-        return {
-          ...state,
-          count: state.count + 1,
-        };
+        // eslint-disable-next-line no-param-reassign
+        state.count += 1;
       },
     });
   }
