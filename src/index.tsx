@@ -59,7 +59,7 @@ export function useSelector<S = any, T = unknown>(
 ) {
   const [value, setValue] = useState(selector(store.getState()));
   useEffect(() => {
-    store.subscribe(() => {
+    return store.subscribe(() => {
       setValue(selector(store.getState()));
     });
   }, [store, selector]);
