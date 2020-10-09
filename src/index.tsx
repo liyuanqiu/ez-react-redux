@@ -4,9 +4,17 @@ import {
   createStore as createReduxStore,
   StoreEnhancer,
   Store,
+  Middleware,
 } from 'redux';
 import { useState, useEffect } from 'react';
 import produce from 'immer';
+import util from 'util';
+
+function assert(condition: boolean, message = 'Error'): asserts condition {
+  if (!condition) {
+    throw new Error(message);
+  }
+}
 
 /**
  * Updater is a function that describes how to update state.
@@ -19,7 +27,11 @@ export type Updater<S = any> = (state: S) => void;
  * @template S The type of the whole state
  */
 export interface EZAction<S = any> extends Action {
-  updater?: Updater<S>;
+  updater: Updater<S>;
+}
+
+interface MutateStateAction<S = any> extends Action {
+  nextState: S;
 }
 
 /**
@@ -31,11 +43,31 @@ export function createStore<S = any>(
   enhancer?: StoreEnhancer
 ) {
   // create redux reducer
-  const reducer: Reducer<S> = (state = initialState, action: EZAction<S>) => {
-    if (action.updater !== undefined) {
-      return produce(state, action.updater);
+  const reducer: Reducer<S, MutateStateAction<S>> = (
+    state = initialState,
+    action
+  ) => {
+    return action.nextState;
+  };
+
+  const immerAsyncMiddleware: Middleware = store => next => (
+    action: EZAction<S>
+  ) => {
+    const nextState = produce(store.getState(), action.updater);
+    if (nextState instanceof Promise) {
+      nextState.then(state =>
+        store.dispatch({
+          type: action.type,
+          nextState: state,
+        })
+      );
+    } else {
+      store.dispatch({
+        type: action.type,
+        nextState,
+      });
     }
-    return state;
+    return next(action);
   };
 
   // create redux store instance
